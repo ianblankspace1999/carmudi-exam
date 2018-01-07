@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\IanBlanco\Documents\movie viewer\examination\app\build\intermediates\incremental-runtime-classes\dev\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.1"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\IanBlanco\Documents\movie viewer\examination\app\build\intermediates\transforms\dex\dev\debug\folders\1000\10000\instant-run_a518cfb42f3d1a73cc50d0bc7797417375c6c977\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\IanBlanco\Documents\movie viewer\examination\app\build\intermediates\incremental-classes\dev\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.1"
+        sha1="2368c2093630e60e85f9925ddae86aec14ee7776">
+        <dex dex="C:\Users\IanBlanco\Documents\movie viewer\examination\app\build\intermediates\transforms\dex\dev\debug\folders\1000\10000\instant-run-bootstrap_ba94afb4f6673e1ca46bc107b39c3c675ae4a1d6\classes.dex" />
+    </item>
+
+</items>

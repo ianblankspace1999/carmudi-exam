@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -46,9 +47,14 @@ public class DisplayListCars extends BaseActivity implements AdapterView.OnItemS
     @BindView(R.id.spnFirst)
     Spinner mSpnFirst;
 
+    private int lastVisibleItem, totalItemCount;
+    private boolean isLoading;
+
     private int spinnerPosition = 0;
 
     private int mPage = 1;
+
+    private LinearLayoutManager mLinearLayoutManager;
 
     private ArrayList<String> mStringCollection = new ArrayList<>();
     private ArrayList<CarData> mCarsList = new ArrayList<>();
@@ -89,13 +95,15 @@ public class DisplayListCars extends BaseActivity implements AdapterView.OnItemS
     @Override
     public void showSuccess(Object result) {
         Log.i("pumasok dito", "pumasok dito");
+        isLoading = false;
         if (result instanceof QueryResponse) {
             Log.i("pumasok dito", "pumasok dito o");
             QueryResponse queryResponse = (QueryResponse) result;
 //            mUserList = quer.getUserList();
             mCarsList = queryResponse.getMetaData().getResults();
-            mDisplayListCarsAdapter = new DisplayListCarsAdapter(this, mCarsList, this);
-            BaseUtil.setDefaultRecyclerView(this, mRvCarList, mDisplayListCarsAdapter);
+//            mDisplayListCarsAdapter = new DisplayListCarsAdapter(this, mCarsList, this);
+//            BaseUtil.setDefaultRecyclerView(this, mRvCarList, mDisplayListCarsAdapter);
+            mDisplayListCarsAdapter.changeData(mCarsList);
             hideProgress();
         }
 
@@ -104,6 +112,7 @@ public class DisplayListCars extends BaseActivity implements AdapterView.OnItemS
     @Override
     public void showError(String error) {
         hideProgress();
+        isLoading = false;
         Log.i("pumasok dito", "pumasok dito error: " + error);
         if (!networkHelper.isNetworkAvailable()) {
             UiUtil.dialogWithOnClick(mContext, "No Internet connection!", new DialogInterface.OnClickListener() {
@@ -117,8 +126,7 @@ public class DisplayListCars extends BaseActivity implements AdapterView.OnItemS
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-
+        spinnerPosition = position;
 
         if (position > 0) {
             mDisplayListUserPresenter.loadData(mTestInterface,
@@ -158,12 +166,36 @@ public class DisplayListCars extends BaseActivity implements AdapterView.OnItemS
         BaseUtil.setSpinner(mContext, mSpnFirst, mStringCollection);
 //        ----------------
 
+        mLinearLayoutManager = new LinearLayoutManager(getApplicationContext(),
+                android.support.v7.widget.LinearLayoutManager.VERTICAL, false);
+
+        mDisplayListCarsAdapter = new DisplayListCarsAdapter(this, mCarsList, this);
+
+        mRvCarList.setLayoutManager(mLinearLayoutManager);
+        mRvCarList.setAdapter(mDisplayListCarsAdapter);
+
         mRvCarList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                totalItemCount = mLinearLayoutManager.getItemCount();
+                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+//                int checker = lastVisibleItem + 1;
+                Log.i("tag", "totalItemCount: " + totalItemCount);
+                Log.i("tag", "lastVisibleItem: " + lastVisibleItem);
+                Log.i("tag", "lastVisibleItem: " + isLoading);
+                if (!isLoading && totalItemCount <= lastVisibleItem + 1) {
+                    isLoading = true;
+                    mPage = mPage + 1;
+                        mDisplayListUserPresenter.loadData(mTestInterface, LoadAction.LOAD_CARS_LIST_CATEGORIZED,
+                                mPage, arrCollectionValue[spinnerPosition]);
+
+
+                }
+
             }
         });
+
 
         mSpnFirst.setOnItemSelectedListener(this);
         if (!networkHelper.isNetworkAvailable()) {

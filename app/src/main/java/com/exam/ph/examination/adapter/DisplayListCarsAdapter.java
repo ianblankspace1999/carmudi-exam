@@ -58,7 +58,13 @@ public class DisplayListCarsAdapter extends RecyclerView.Adapter<DisplayListCars
 
     @Override
     public int getItemCount() {
+
         return mCarsList.size();
+    }
+
+    public void changeData(ArrayList<CarData> carDatas) {
+        mCarsList = carDatas;
+        notifyDataSetChanged();
     }
 
 
