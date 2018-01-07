@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "C:\\Users\\IanBlanco\\Documents\\movie viewer\\examination\\app\\build\\intermediates\\incremental\\mergeDevDebugAndroidTestResources\\merged.dir\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 45,
+                    "endOffset": 96
+                },
+                "from": {
+                    "file": "C:\\Users\\IanBlanco\\.android\\build-cache\\b896fa6e9de090302a8201f3f8b8050fa3812add\\output\\res\\values\\values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 229,
+                        "endColumn": 45,
+                        "endOffset": 270
+                    }
+                }
+            }
+        ]
+    }
+]
